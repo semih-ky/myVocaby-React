@@ -1,24 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import { AuthProvider } from "./components/context/Auth";
+import Authentication from "./components/Authentication";
+import RestrictedPage from "./components/RestrictedPage";
+import Login from "./pages/login";
+import Signup from "./pages/signup/index.js";
+import Home from "./pages/home";
+import Quiz from "./pages/quiz";
+import NotFound from "./pages/notFound";
+import { Route, Routes } from "react-router-dom";
+
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Authentication>
+              <Home />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            <Authentication>
+              <Home />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/quiz"
+          element={
+            <Authentication>
+              <Quiz />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedPage>
+              <Login />
+            </RestrictedPage>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <RestrictedPage>
+              <Signup />
+            </RestrictedPage>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

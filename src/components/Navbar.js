@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "./context/Auth";
 import NewWord from "./NewWord";
 
 const Navbar = () => {
+  const auth = useAuth();
+
   const [isBurgerActive, setIsBurgerActive] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
 
@@ -14,6 +17,10 @@ const Navbar = () => {
 
   const modalHandler = () => {
     setIsModalActive(!isModalActive);
+  };
+
+  const logoutHandler = () => {
+    auth.logout();
   };
 
   return (
@@ -79,7 +86,7 @@ const Navbar = () => {
             </div>
             <div className="navbar-item">
               <div className="buttons">
-                <button className="button is-danger">
+                <button onClick={logoutHandler} className="button is-danger">
                   <strong>Logout</strong>
                 </button>
               </div>

@@ -21,10 +21,7 @@ const Signup = () => {
   const [btnDisable, setBtnDisable] = useState(true);
 
   useEffect(() => {
-    return () => {
-      auth.setSuccessMsg("");
-      auth.setErrorMsg("");
-    };
+    if (auth.errorMsg) auth.setErrorMsg("");
   }, []);
 
   useEffect(() => {
@@ -79,7 +76,7 @@ const Signup = () => {
 
     if (trimmedValue(val).length < 8) {
       setPassSuccess(false);
-      setPassError("Password must 8 character long!");
+      setPassError("Password must at least 8 character long!");
     } else {
       setPassError("");
       setPassSuccess(true);
@@ -165,6 +162,14 @@ const Signup = () => {
             <i className="fas fa-key"></i>
           </span>
         </div>
+        <p className="help">
+          <span className="icon-text">
+            <span className="icon">
+              <i className="fas fa-info-circle"></i>
+            </span>
+            <span>Password must be at least 8 character.</span>
+          </span>
+        </p>
         {passError && <p className="help is-danger">{passError}</p>}
       </div>
 

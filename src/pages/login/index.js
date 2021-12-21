@@ -20,11 +20,12 @@ const Login = () => {
     if (location.state) {
       if (location.state.username) {
         setUsername(location.state.username);
+        setUsrSuccess(true);
       }
     }
+    if (auth.errorMsg) auth.setErrorMsg("");
     return () => {
       auth.setSuccessMsg("");
-      auth.setErrorMsg("");
     };
   }, []);
 
@@ -35,7 +36,7 @@ const Login = () => {
     } else {
       setBtnDisable(true);
     }
-  }, [usrSuccess, passSuccess]);
+  }, [username, password]);
 
   useEffect(() => {
     if (auth.errorMsg) setBtnDisable(true);
@@ -71,8 +72,7 @@ const Login = () => {
 
     setPassword(val);
 
-    if (trimmedValue(val).length < 6) {
-      // change 6 with 8
+    if (trimmedValue(val).length < 8) {
       setPassSuccess(false);
     } else {
       setPassSuccess(true);
@@ -80,6 +80,7 @@ const Login = () => {
   };
 
   const clearPassword = () => {
+    setPassSuccess(false);
     setPassword("");
   };
 

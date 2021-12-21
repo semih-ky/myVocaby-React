@@ -7,20 +7,19 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("location", location);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // const firstCase = useRef(true);
-  // const [tokenExpTime, setTokenExpTime] = useState(null);
+  const [tknExp, setTknExp] = useState(null);
 
-  // useEffect(() => {
-  //   if (firstCase.current) return;
-  //   const remainingTime = tokenExpTime - Date.now();
-
-  //   refreshToken(remainingTime - 2000);
-  // }, [token])
+  useEffect(() => {
+    if (!tknExp) return;
+    const remainingTime = tknExp - Date.now();
+    refreshToken(remainingTime - 2000);
+  }, [tknExp]);
 
   const login = async (username = "", password = "") => {
     if (successMsg) setSuccessMsg("");
@@ -48,13 +47,16 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", data.token || 0);
       localStorage.setItem("expTime", data.expTime || 0);
 
-      const remainingTime = data.expTime - Date.now();
-      console.log(remainingTime);
+      // const remainingTime = data.expTime - Date.now();
+      // console.log(remainingTime);
 
-      refreshToken(remainingTime - 2000);
+      // refreshToken(remainingTime - 2000);
+
+      setTknExp(data.expTime);
+
       setIsLoading(false);
       setIsLoggedIn(true);
-      navigate(location.state.from ?? "/home");
+      navigate(location.state?.from || "/home");
     } catch (err) {
       setIsLoading(false);
       console.log(err);
@@ -120,6 +122,8 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.setItem("token", data.token || 0);
         localStorage.setItem("expTime", data.expTime || 0);
+
+        setTknExp(data.expTime);
       } catch (err) {
         console.log(err);
       }
@@ -140,8 +144,9 @@ export const AuthProvider = ({ children }) => {
     console.log("yes");
     setIsLoggedIn(true);
 
-    const remainingTime = expTime - Date.now();
-    refreshToken(remainingTime - 2000);
+    // const remainingTime = expTime - Date.now();
+    // refreshToken(remainingTime - 2000);
+    setTknExp(expTime);
   }, []);
 
   let value = {

@@ -71,7 +71,8 @@ const Login = () => {
 
     setPassword(val);
 
-    if (trimmedValue(val).length < 8) {
+    if (trimmedValue(val).length < 6) {
+      // change 6 with 8
       setPassSuccess(false);
     } else {
       setPassSuccess(true);

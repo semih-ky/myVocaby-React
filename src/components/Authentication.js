@@ -5,7 +5,7 @@ const Authentication = ({ children }) => {
   const { isLoggedIn } = useAuth();
 
   const location = useLocation();
-
+  console.log(isLoggedIn);
   if (!isLoggedIn) {
     return <Navigate to="/login" state={{ from: location }} />;
   }

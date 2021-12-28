@@ -1,13 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./components/context/Auth";
+import { CardsProvider } from "./components/context/CardsProvider";
 import Authentication from "./components/Authentication";
 import RestrictedPage from "./components/RestrictedPage";
 import Login from "./pages/login";
 import Signup from "./pages/signup/";
 import Home from "./pages/home";
 import Quiz from "./pages/quiz";
-import NotFound from "./pages/notFound";
+import Error from "./pages/error";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./App.css";
@@ -20,7 +21,9 @@ function App() {
           path="/"
           element={
             <Authentication>
-              <Home />
+              <CardsProvider>
+                <Home />
+              </CardsProvider>
             </Authentication>
           }
         />
@@ -28,7 +31,9 @@ function App() {
           path="/home"
           element={
             <Authentication>
-              <Home />
+              <CardsProvider>
+                <Home />
+              </CardsProvider>
             </Authentication>
           }
         />
@@ -36,7 +41,9 @@ function App() {
           path="/quiz"
           element={
             <Authentication>
-              <Quiz />
+              <CardsProvider>
+                <Quiz />
+              </CardsProvider>
             </Authentication>
           }
         />
@@ -56,7 +63,10 @@ function App() {
             </RestrictedPage>
           }
         />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path="*"
+          element={<Error statusCode={404} message={"Page not found!"} />}
+        />
       </Routes>
     </AuthProvider>
   );

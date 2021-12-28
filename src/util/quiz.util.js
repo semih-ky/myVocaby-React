@@ -5,6 +5,7 @@ export const qz = {
   },
 
   generateRandomSort(max, dataLength) {
+    if (max > dataLength) max = dataLength;
     let randomSort = [];
 
     while (randomSort.length !== max) {
@@ -37,20 +38,36 @@ export const qz = {
 
     const word = words[sort[questionNumber]];
 
-    const question = word[types.questionType];
-
     const correctAnswerId = word.wordId;
 
     let answersArr = new Array(4).fill(null);
 
     const answerPosition = this.generateRandomInt(4);
 
+    let question;
+    if (types.questionType === "word") {
+      question = word.word;
+    }
+
+    if (types.questionType === "definition") {
+      question = word.definitions[0];
+    }
+
     let choosenAnswers = [];
     let answers = answersArr.map((_, index) => {
+      let answer;
       if (index === answerPosition) {
+        if (types.answerType === "word") {
+          answer = word.word;
+        }
+
+        if (types.answerType === "definition") {
+          answer = word.definitions[0];
+        }
+
         return {
           answerId: correctAnswerId,
-          answer: word[types.answerType],
+          answer: answer,
         };
       }
 
@@ -61,9 +78,17 @@ export const qz = {
 
       choosenAnswers.push(j);
 
+      if (types.answerType === "word") {
+        answer = words[j].word;
+      }
+
+      if (types.answerType === "definition") {
+        answer = words[j].definitions[0];
+      }
+
       return {
         answerId: words[j].wordId,
-        answer: words[j][types.answerType],
+        answer: answer,
       };
     });
 
@@ -72,5 +97,12 @@ export const qz = {
       answers,
       correctAnswerId,
     };
+  },
+
+  getUniqueQuizWords(words) {
+    return words.filter(
+      (word, index, self) =>
+        index === self.findIndex((w) => w.word === word.word)
+    );
   },
 };

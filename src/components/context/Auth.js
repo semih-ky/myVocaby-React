@@ -5,9 +5,26 @@ import { fetchData } from "../../util/util";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const isLoggedInFunct = () => {
+    console.log("Look at the user is logged in");
+
+    const tkn = localStorage.getItem("token");
+    const expTime = localStorage.getItem("expTime");
+
+    if (!tkn || !expTime) return false;
+
+    const currTime = Date.now();
+
+    if (currTime > expTime) return false;
+
+    return true;
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInFunct());
+  // console.log(isLoggedIn);
+  // console.log(isLoggedInFunct());
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +122,7 @@ export const AuthProvider = ({ children }) => {
 
       try {
         let res = await fetchData({
-          path: "/refresh_token",
+          path: "/refresh-token",
           method: "get",
           token: tkn,
         });
@@ -131,21 +148,24 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("Look at the user is logged in");
+    if (isLoggedIn) {
+      console.log("yes");
+      // const tkn = localStorage.getItem("token");
+      const expTime = localStorage.getItem("expTime");
 
-    const tkn = localStorage.getItem("token");
-    const expTime = localStorage.getItem("expTime");
+      // if (!tkn || !expTime) return;
 
-    if (!tkn || !expTime) return;
+      // const currTime = Date.now();
+      // if (currTime > expTime) return;
 
-    const currTime = Date.now();
-    if (currTime > expTime) return;
+      // console.log("yes");
+      // setIsLoggedIn(true);
 
-    console.log("yes");
-    setIsLoggedIn(true);
+      // const remainingTime = expTime - Date.now();
+      // refreshToken(remainingTime - 2000);
 
-    // const remainingTime = expTime - Date.now();
-    // refreshToken(remainingTime - 2000);
-    setTknExp(expTime);
+      setTknExp(expTime);
+    }
   }, []);
 
   let value = {

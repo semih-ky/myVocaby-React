@@ -1,28 +1,65 @@
-import { useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react";
+import { useCardProvider } from "../../components/context/CardsProvider";
+import Loading from "../../components/Loading";
 import Navbar from "../../components/Navbar";
 import QuizProblems from "../../components/QuizProblems";
-import { dummyData } from "../../components/testData";
+import { qz } from "../../util/quiz.util";
 
 const Quiz = () => {
-  const [isStart, setIsStart] = useState(false);
+  const { words, isLoading } = useCardProvider();
+
   const [numberOfQuestion, setNumberOfQuestion] = useState(5);
+  const [errMsg, setErrMsg] = useState("");
+  const [btnDisable, setBtnDisable] = useState(true);
+  const [isStart, setIsStart] = useState(false);
+  const [quizWords, setQuizWords] = useState(null);
+
+  useEffect(() => {
+    if (isLoading) return;
+    const qzWords = qz.getUniqueQuizWords(words);
+    setQuizWords(qzWords);
+    if (qzWords.length >= numberOfQuestion) {
+      setBtnDisable(false);
+    }
+  }, [isLoading]);
 
   const questionNumberHandler = (e) => {
-    setNumberOfQuestion(parseInt(e.target.value));
+    const val = parseInt(e.target.value);
+    if (isNaN(val)) return;
+
+    if (val > quizWords.length) {
+      setBtnDisable(true);
+      setErrMsg("You don't have enough words!");
+      return;
+    }
+    setBtnDisable(false);
+    setErrMsg("");
+    setNumberOfQuestion(val);
   };
 
   const startHandler = () => {
+    if (isNaN(numberOfQuestion)) return;
+
     setIsStart(true);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
       <Navbar />
-      <div className="container">
-        {isStart ? (
-          <QuizProblems numberOfQuestion={numberOfQuestion} words={dummyData} />
-        ) : (
-          <>
+      {/* <div className="container"> */}
+      {isStart ? (
+        <QuizProblems
+          numberOfQuestion={numberOfQuestion}
+          words={quizWords}
+          setIsStart={setIsStart}
+        />
+      ) : (
+        <>
+          <div className="container">
             <header>
               <p className="has-text-centered is-size-3">
                 <strong>Quiz</strong>
@@ -44,21 +81,24 @@ const Quiz = () => {
                     </select>
                   </div>
                   <p className="help">
-                    You must have <strong>at least 5 </strong>word cards.
+                    You must have <strong>at least 5 unique </strong>words.
                   </p>
                 </div>
+                {errMsg && <p className="help is-danger">{errMsg}</p>}
                 <button
                   onClick={startHandler}
                   className="button button-custom is-primary"
                   type="button"
+                  disabled={btnDisable}
                 >
                   Start
                 </button>
               </div>
             </section>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
+      {/* </div> */}
     </>
   );
 };

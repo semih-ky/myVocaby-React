@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const QuizSummary = ({ correctNumber, wrongNumber }) => {
+const QuizSummary = ({ correctNumber, wrongNumber, setIsStart }) => {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(null);
 
@@ -14,15 +15,19 @@ const QuizSummary = ({ correctNumber, wrongNumber }) => {
     }
   }, []);
 
+  const restartHandler = () => {
+    setIsStart(false);
+  };
+
   return (
-    <div>
+    <div className="quiz-summary">
       <section
         className={
           isSuccess === null
-            ? "hero is-link is-halfheight"
+            ? "hero is-link is-fullheight"
             : isSuccess
-            ? "hero is-success is-halfheight"
-            : "hero is-danger is-halfheight"
+            ? "hero is-success is-fullheight"
+            : "hero is-danger is-fullheight"
         }
       >
         <div className="hero-body">
@@ -57,7 +62,7 @@ const QuizSummary = ({ correctNumber, wrongNumber }) => {
             <p className="subtitle">{message && message}</p>
             <div className="field is-grouped">
               <p className="control">
-                <button className="button is-light">
+                <button onClick={restartHandler} className="button is-light">
                   <span className="icon">
                     <i className="fas fa-sync-alt"></i>
                   </span>
@@ -65,12 +70,12 @@ const QuizSummary = ({ correctNumber, wrongNumber }) => {
                 </button>
               </p>
               <p className="control">
-                <button className="button is-light">
+                <Link to="/home" className="button is-light">
                   <span className="icon">
                     <i className="fas fa-home"></i>
                   </span>
                   <span>Home</span>
-                </button>
+                </Link>
               </p>
             </div>
           </div>

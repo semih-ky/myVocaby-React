@@ -4,7 +4,7 @@ import QuizSummary from "./QuizSummary";
 
 const VIEWPORT_WIDTH = window.visualViewport.width;
 
-const QuizProblems = ({ numberOfQuestion, words }) => {
+const QuizProblems = ({ numberOfQuestion, words, setIsStart }) => {
   const questionsSort = useRef(
     qz.generateRandomSort(numberOfQuestion, words.length)
   );
@@ -23,6 +23,7 @@ const QuizProblems = ({ numberOfQuestion, words }) => {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
+    console.log(words);
     const quizData = qz.getQuizData(
       words,
       questionsSort.current,
@@ -52,6 +53,7 @@ const QuizProblems = ({ numberOfQuestion, words }) => {
   };
 
   const nextHandler = () => {
+    if (!isLock) return;
     if (questionNumber + 1 < numberOfQuestion) {
       setUserSelectId("");
       setQuestionNumber((oldState) => oldState + 1);
@@ -63,74 +65,87 @@ const QuizProblems = ({ numberOfQuestion, words }) => {
     }
   };
 
+  const restartHandler = () => {
+    setIsStart(false);
+  };
+
   return (
     <>
       {isFinished ? (
         <QuizSummary
           correctNumber={userCorrect.current}
           wrongNumber={userWrong.current}
+          setIsStart={setIsStart}
         />
       ) : (
-        <section className="quiz-container">
-          <div
-            className={VIEWPORT_WIDTH <= 400 ? "box-custom" : "box box-custom"}
-          >
-            <p className="is-size-4">
-              <strong>
-                <span>{questionNumber + 1}</span> <span>/</span>{" "}
-                <span>{numberOfQuestion}</span>
-              </strong>
-            </p>
-            <div className="break-line"></div>
-            <p className="is-size-5 has-text-centered">
-              <strong>{question}</strong>
-            </p>
+        <div className="container">
+          <section className="quiz-container">
+            <div
+              className={
+                VIEWPORT_WIDTH <= 400 ? "box-custom" : "box box-custom"
+              }
+            >
+              <p className="is-size-4">
+                <strong>
+                  <span>{questionNumber + 1}</span> <span>/</span>{" "}
+                  <span>{numberOfQuestion}</span>
+                </strong>
+              </p>
+              <div className="break-line"></div>
+              <p className="is-size-5 has-text-centered">
+                <strong>{question}</strong>
+              </p>
 
-            <div className="answers-container">
-              {answers.map((answer) => (
-                <div
-                  onClick={userSelectHandler}
-                  className={
-                    userSelectId === answer.answerId
-                      ? userSelectId === correctAnswerId
-                        ? "answers answer-correct"
-                        : "answers answer-wrong"
-                      : "answers"
-                  }
-                  id={answer.answerId}
-                  key={answer.answerId}
-                >
-                  <p>{answer.answer}</p>
-                </div>
-              ))}
+              <div className="answers-container">
+                {answers.map((answer) => (
+                  <div
+                    onClick={userSelectHandler}
+                    className={
+                      userSelectId === answer.answerId
+                        ? userSelectId === correctAnswerId
+                          ? "answers answer-correct"
+                          : "answers answer-wrong"
+                        : "answers"
+                    }
+                    id={answer.answerId}
+                    key={answer.answerId}
+                  >
+                    <p>{answer.answer}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="field is-grouped">
+                <p className="control">
+                  <button
+                    onClick={restartHandler}
+                    className="button is-outlined is-info"
+                  >
+                    <span className="icon">
+                      <i className="fas fa-sync-alt"></i>
+                    </span>
+                    <span>Restart</span>
+                  </button>
+                </p>
+                <p className="control">
+                  <button
+                    disabled={!isLock}
+                    onClick={nextHandler}
+                    className="button is-outlined is-link"
+                  >
+                    <span>
+                      {questionNumber + 1 === numberOfQuestion
+                        ? "Finish"
+                        : "Next"}
+                    </span>
+                    <span className="icon">
+                      <i className="fas fa-chevron-right"></i>
+                    </span>
+                  </button>
+                </p>
+              </div>
             </div>
-            <div className="field is-grouped">
-              <p className="control">
-                <button className="button is-outlined is-info">
-                  <span className="icon">
-                    <i className="fas fa-sync-alt"></i>
-                  </span>
-                  <span>Restart</span>
-                </button>
-              </p>
-              <p className="control">
-                <button
-                  onClick={nextHandler}
-                  className="button is-outlined is-link"
-                >
-                  <span>
-                    {questionNumber + 1 === numberOfQuestion
-                      ? "Finish"
-                      : "Next"}
-                  </span>
-                  <span className="icon">
-                    <i className="fas fa-chevron-right"></i>
-                  </span>
-                </button>
-              </p>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
       )}
     </>
   );

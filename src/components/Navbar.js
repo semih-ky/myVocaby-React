@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "./context/Auth";
-import NewWord from "./NewWord";
+import SearchWord from "./SearchWord";
 
 const Navbar = () => {
   const auth = useAuth();
@@ -75,13 +75,16 @@ const Navbar = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <button onClick={modalHandler} className="button is-success">
+                <button
+                  onClick={modalHandler}
+                  className="button is-link is-inverted"
+                >
                   <span className="icon">
-                    <i className="fas fa-plus"></i>
+                    <i className="fas fa-search"></i>
                   </span>
-                  <strong>New Word</strong>
+                  <strong>Search Word</strong>
                 </button>
-                {isModalActive && <NewWord modalHandler={modalHandler} />}
+                {isModalActive && <SearchWord modalHandler={modalHandler} />}
               </div>
             </div>
             <div className="navbar-item">

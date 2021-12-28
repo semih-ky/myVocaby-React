@@ -24,6 +24,18 @@ export const fetchData = async ({
   return await fetch(url, init);
 };
 
+export const fetchWords = async (filter = "") => {
+  const path = "/words" + (filter && "?filter=") + filter;
+
+  const tkn = localStorage.getItem("token");
+
+  return await fetchData({
+    path: path,
+    method: "get",
+    token: tkn,
+  });
+};
+
 export const regexValidator = (value, regex) => {
   let keyPress = value.split("")[value.length - 1];
   return regex.test(keyPress);

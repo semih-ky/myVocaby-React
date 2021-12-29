@@ -1,14 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 
-import { AuthProvider } from "./components/context/Auth";
-import { CardsProvider } from "./components/context/CardsProvider";
-import Authentication from "./components/Authentication";
-import RestrictedPage from "./components/RestrictedPage";
-import Login from "./pages/login";
-import Signup from "./pages/signup/";
-import Home from "./pages/home";
-import Quiz from "./pages/quiz";
-import Error from "./pages/error";
+import { AuthProvider } from "./contextV2/AuthProvider";
+import { WordsProvider } from "./contextV2/WordsProvider";
+
+import Authentication from "./componentsV2/Authentication";
+import RestrictedPage from "./componentsV2/RestrictedPage";
+import Login from "./pagesV2/Login";
+import Signup from "./pagesV2/Signup";
+import Home from "./pagesV2/Home";
+import Quiz from "./pagesV2/Quiz";
+import Error from "./pagesV2/Error";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./App.css";
@@ -21,9 +22,9 @@ function App() {
           path="/"
           element={
             <Authentication>
-              <CardsProvider>
+              <WordsProvider>
                 <Home />
-              </CardsProvider>
+              </WordsProvider>
             </Authentication>
           }
         />
@@ -31,9 +32,9 @@ function App() {
           path="/home"
           element={
             <Authentication>
-              <CardsProvider>
+              <WordsProvider>
                 <Home />
-              </CardsProvider>
+              </WordsProvider>
             </Authentication>
           }
         />
@@ -41,9 +42,9 @@ function App() {
           path="/quiz"
           element={
             <Authentication>
-              <CardsProvider>
+              <WordsProvider>
                 <Quiz />
-              </CardsProvider>
+              </WordsProvider>
             </Authentication>
           }
         />

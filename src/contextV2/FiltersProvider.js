@@ -12,18 +12,28 @@ export const FiltersProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
 
+  const [errorPage, setErrorPage] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const getFilters = async () => {
+    if (errorPage) setErrorPage(null);
+    setIsLoading(true);
     try {
       const data = await getFilterList();
       setFilterList(data.filters);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setError(err);
+      setIsLoading(false);
+      setErrorPage(err);
     }
   };
 
   const createFilter = async (filterName = "") => {
     if (!filterName) return;
+    if (error) setError(null);
+    setIsLoading(true);
 
     try {
       const data = await postCreateFilter({
@@ -31,14 +41,19 @@ export const FiltersProvider = ({ children }) => {
       });
 
       setFilterList([...filterList, filterName]);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
 
   const delFilter = async (filterName = "") => {
     if (!filterName) return;
+    if (error) setError(null);
+    setIsLoading(true);
+
     try {
       const data = await deleteFilter({
         filter: filterName,
@@ -46,8 +61,10 @@ export const FiltersProvider = ({ children }) => {
 
       let updatedFilterList = filterList.filter((item) => item !== filterName);
       setFilterList(updatedFilterList);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
@@ -61,6 +78,8 @@ export const FiltersProvider = ({ children }) => {
     error,
     createFilter,
     delFilter,
+    isLoading,
+    errorPage,
   };
 
   return (
@@ -68,4 +87,4 @@ export const FiltersProvider = ({ children }) => {
   );
 };
 
-export const useFiltersProvider = () => useContext(FiltersContext);
+export const useFilters = () => useContext(FiltersContext);

@@ -22,7 +22,9 @@ async function fetchData(path = "", method = "GET", token = false, body = "") {
 
   const contentType = res.headers.get("content-type");
   if (!contentType || !contentType.includes("application/json")) {
-    throw new Error("Something went wrong!");
+    const error = new Error("Something went wrong!");
+    error.statusCode = 500;
+    throw error;
   }
 
   let data = await res.json();

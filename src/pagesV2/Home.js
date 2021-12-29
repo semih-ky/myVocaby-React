@@ -1,24 +1,27 @@
-import { useCardProvider } from "../../components/context/CardsProvider";
-import Cards from "../../components/Cards";
-import Navbar from "../../components/Navbar";
-import Panel from "../../components/Panel";
-import Loading from "../../components/Loading";
-import Error from "../error";
+import { useWords } from "../contextV2/WordsProvider";
+import { FiltersProvider } from "../contextV2/FiltersProvider";
+import Loading from "../componentsV2/Loading";
+import Error from "./Error";
+import Navbar from "../componentsV2/Navbar/index";
+import Panel from "../componentsV2/Panel/index";
+// import Cards from "../../components/Cards";
 
 const Home = () => {
-  const { isLoading, errFetchWords, errFilterList } = useCardProvider();
+  const { errorPage, isLoading } = useWords();
   return (
     <>
       {isLoading ? (
-        errFetchWords || errFilterList ? (
-          <Error message={errFetchWords ? errFetchWords : errFilterList} />
-        ) : (
-          <Loading />
-        )
+        <Loading />
+      ) : errorPage ? (
+        <Error message={errorPage.message} statusCode={errorPage.statusCode} />
       ) : (
         <>
           <Navbar />
-          <Panel />
+
+          <FiltersProvider>
+            <Panel />
+          </FiltersProvider>
+
           <Cards />
         </>
       )}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Hero from "./Hero";
+import Hero from "../Hero";
 
 const AuthPageLayout = (props) => {
   return (

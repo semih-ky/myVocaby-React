@@ -1,17 +1,11 @@
 import { useState } from "react";
-import { fetchData, regexValidator } from "../util/util";
-import { useCardProvider } from "./context/CardsProvider";
+import { useFilters } from "../../../contextV2/FiltersProvider";
+import { regexValidator } from "../../../utilsV2/util";
 
-const CreateFilter = ({ setIsCreateFilter }) => {
-  const { filterList, setFilterList } = useCardProvider();
-
-  const closeCreateFilter = () => {
-    setIsCreateFilter(false);
-  };
+const CreateFilterModal = ({ modalOpenClose }) => {
+  const { createFilter, error, isLoading } = useFilters();
 
   const [filterName, setFilterName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
 
   const filterNameHandler = (e) => {
     const val = e.target.value;
@@ -21,35 +15,8 @@ const CreateFilter = ({ setIsCreateFilter }) => {
     setFilterName(val);
   };
 
-  const createFilter = async () => {
-    setIsLoading(true);
-
-    try {
-      let res = await fetchData({
-        path: "/create-filter",
-        method: "POST",
-        token: localStorage.getItem("token"),
-        body: { filter: filterName },
-      });
-
-      let data = await res.json();
-
-      if (!res.ok) {
-        setIsLoading(false);
-        setErrMsg(data.message);
-        return;
-      }
-
-      setFilterList([...filterList, filterName]);
-
-      setIsLoading(false);
-
-      closeCreateFilter();
-    } catch (err) {
-      setIsLoading(false);
-      setErrMsg("Something went wrong!");
-      console.log(err);
-    }
+  const createHandler = () => {
+    createFilter(filterName);
   };
 
   return (
@@ -59,7 +26,7 @@ const CreateFilter = ({ setIsCreateFilter }) => {
         <header className="modal-card-head">
           <p className="modal-card-title">Create Filter</p>
           <button
-            onClick={closeCreateFilter}
+            onClick={modalOpenClose}
             className="delete"
             aria-label="close"
           ></button>
@@ -82,18 +49,18 @@ const CreateFilter = ({ setIsCreateFilter }) => {
               </div>
             </div>
           </div>
-          {errMsg && <p className="help is-danger">{errMsg}</p>}
+          {error && <p className="help is-danger">{error.message}</p>}
         </section>
         <footer className="modal-card-foot">
           <button
-            onClick={createFilter}
+            onClick={createHandler}
             className={
               isLoading ? "button is-warning is-loading" : "button is-warning"
             }
           >
             Create
           </button>
-          <button onClick={closeCreateFilter} className="button">
+          <button onClick={modalOpenClose} className="button">
             Cancel
           </button>
         </footer>
@@ -101,4 +68,4 @@ const CreateFilter = ({ setIsCreateFilter }) => {
     </div>
   );
 };
-export default CreateFilter;
+export default CreateFilterModal;

@@ -19,8 +19,12 @@ export const AuthProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const login = async (username = "", password = "") => {
     if (!username || !password) return;
+    setIsLoading(true);
+    if (error) setError(null);
     try {
       const data = await postLogin({
         username,
@@ -34,25 +38,33 @@ export const AuthProvider = ({ children }) => {
         setTknExp(data.expTime);
         setIsLoggedIn(true);
       }
+      setIsLoading(false);
       navigate(location.state?.from || "/home");
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
 
   const signup = async (username = "", password = "", rePassword = "") => {
+    if (!username || !password || !rePassword) return;
+    setIsLoading(true);
+    if (error) setError(null);
     try {
       const data = await postSignup({
         username,
         password,
         rePassword,
       });
+      setIsLoading(false);
+
       navigate("/login", {
         state: { username: username, message: "Successfully Sign Up!" },
       });
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
@@ -111,6 +123,7 @@ export const AuthProvider = ({ children }) => {
     login,
     signup,
     logout,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

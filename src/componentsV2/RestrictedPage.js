@@ -1,4 +1,4 @@
-import { useAuth } from "./context/Auth";
+import { useAuth } from "../contextV2/AuthProvider";
 import { Navigate } from "react-router-dom";
 
 const RestrictedPage = ({ children }) => {

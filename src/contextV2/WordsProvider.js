@@ -10,44 +10,60 @@ export const WordsProvider = ({ children }) => {
 
   const [error, setError] = useState(null);
 
-  const fetchWords = async (filter = "") => {
+  const [errorPage, setErrorPage] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchWords = async () => {
+    if (errorPage) setErrorPage(null);
+    setIsLoading(true);
     try {
       const data = await getWords(filter);
       data.words.sort(
         (item1, item2) => Date.parse(item2.history) - Date.parse(item1.history)
       );
+      setIsLoading(false);
       setWords(data.words);
     } catch (err) {
       console.log(err);
-      setError(err);
+      setIsLoading(false);
+      setErrorPage(err);
     }
   };
 
-  const saveWord = async (wordId = "", filter = "") => {
+  const saveWord = async (wordId = "") => {
     if (!wordId) return;
+    if (error) setError(null);
+    setIsLoading(true);
     try {
       const data = await postSaveWord({
         wordId: wordId,
         filter: filter,
       });
+      setIsLoading(false);
       setWords([data.word, ...words]);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
 
-  const delWord = async (wordId = "", filter = "") => {
+  const delWord = async (wordId = "") => {
     if (!wordId) return;
+    if (error) setError(null);
+    setIsLoading(true);
     try {
       const data = await deleteWord({
         wordId: wordId,
         filter: filter,
       });
       let updatedWords = words.filter((word) => word._id !== wordId);
+      setIsLoading(false);
       setWords(updatedWords);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
       setError(err);
     }
   };
@@ -56,8 +72,12 @@ export const WordsProvider = ({ children }) => {
     setFilter(filter);
   };
 
+  const removeError = () => {
+    setError(null);
+  };
+
   useEffect(() => {
-    fetchWords(filter);
+    fetchWords();
   }, [filter]);
 
   let value = {
@@ -67,6 +87,9 @@ export const WordsProvider = ({ children }) => {
     error,
     saveWord,
     delWord,
+    isLoading,
+    removeError,
+    errorPage,
   };
 
   return (
@@ -74,4 +97,4 @@ export const WordsProvider = ({ children }) => {
   );
 };
 
-export const useWordsProvider = () => useContext(WordsContext);
+export const useWords = () => useContext(WordsContext);

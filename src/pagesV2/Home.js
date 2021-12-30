@@ -4,7 +4,7 @@ import Loading from "../componentsV2/Loading";
 import Error from "./Error";
 import Navbar from "../componentsV2/Navbar/index";
 import Panel from "../componentsV2/Panel/index";
-// import Cards from "../../components/Cards";
+import Cards from "../componentsV2/Cards/index";
 
 const Home = () => {
   const { errorPage, isLoading } = useWords();

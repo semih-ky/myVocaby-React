@@ -1,15 +1,16 @@
-import { useState } from "react/cjs/react.development";
-import { fetchData } from "../util/util";
-import { useCardProvider } from "./context/CardsProvider";
+import { useState } from "react";
+import { useWords } from "../../contextV2/WordsProvider";
+import Loading from "../Loading";
 import DeleteWarning from "./DeleteWarning";
-import Loading from "./Loading";
 
 const Cards = () => {
-  const { words, setWords, isWordsLoading, filter } = useCardProvider();
+  const { words, delWord, isLoading, filter } = useWords();
 
   const [isPlay, setIsPlay] = useState("");
 
-  const [deleteWarning, setDeleteWarning] = useState("");
+  const [isOpenWarning, setIsOpenWarning] = useState("");
+
+  const [wordId, setWordId] = useState("");
 
   const playHandler = (e) => {
     setIsPlay(e.currentTarget.parentElement.id);
@@ -22,33 +23,29 @@ const Cards = () => {
   };
 
   const deleteHandler = (e) => {
-    const wordId = e.currentTarget.id;
+    const choosenWordId = e.currentTarget.id;
     if (filter) {
-      fetchData({
-        path: "/delete-word",
-        method: "delete",
-        token: localStorage.getItem("token"),
-        body: { wordId, filter },
-      });
-
-      let updatedWords = words.filter((word) => word._id !== wordId);
-
-      setWords(updatedWords);
+      delWord(choosenWordId);
       return;
     }
-    setDeleteWarning(wordId);
+    setWordId(choosenWordId);
+    setIsOpenWarning(true);
+  };
+
+  const warningOpenClose = () => {
+    setIsOpenWarning(!isOpenWarning);
   };
 
   return (
     <>
-      {isWordsLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <div className="card-background">
-          {deleteWarning && (
+          {isOpenWarning && (
             <DeleteWarning
-              wordId={deleteWarning}
-              setDeleteWarning={setDeleteWarning}
+              wordId={wordId}
+              warningOpenClose={warningOpenClose}
             />
           )}
           <div className="cards-container">

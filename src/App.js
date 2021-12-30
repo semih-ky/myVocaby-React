@@ -8,7 +8,7 @@ import RestrictedPage from "./componentsV2/RestrictedPage";
 import Login from "./pagesV2/Login";
 import Signup from "./pagesV2/Signup";
 import Home from "./pagesV2/Home";
-import Quiz from "./pagesV2/Quiz";
+import Quiz from "./pagesV2/Quiz/index";
 import Error from "./pagesV2/Error";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";

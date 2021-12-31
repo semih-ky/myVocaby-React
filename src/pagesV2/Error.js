@@ -2,10 +2,10 @@ import { useEffect } from "react";
 
 const Error = ({ statusCode, message }) => {
   useEffect(() => {
-    if (statusCode !== 404) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("expTime");
-    }
+    // if (statusCode !== 404) {
+    //   localStorage.removeItem("token");
+    //   localStorage.removeItem("expTime");
+    // }
   });
 
   return (

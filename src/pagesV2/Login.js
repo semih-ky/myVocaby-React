@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../contextV2/AuthProvider";
 import { AuthPageProvider } from "../contextV2/AuthPageProvider";
@@ -8,8 +9,11 @@ import AuthButton from "../componentsV2/Auth/AuthButton";
 
 const Login = () => {
   const location = useLocation();
-  console.log("login page", location); // for success msg
-  const { error } = useAuth();
+  const { error, setError } = useAuth();
+
+  useEffect(() => {
+    return () => setError(null);
+  }, []);
 
   return (
     <AuthPageProvider>
@@ -21,11 +25,11 @@ const Login = () => {
         {error && (
           <div className="notification is-danger is-light">{error.message}</div>
         )}
-        {/* {auth.successMsg && (
+        {location.state?.message && (
           <div className="notification is-success is-light">
-            {auth.successMsg}
+            {location.state?.message}
           </div>
-        )} */}
+        )}
         <Username />
         <Password />
         <AuthButton label="Login" />

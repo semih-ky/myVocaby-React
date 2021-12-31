@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuthPage } from "../../contextV2/AuthPageProvider";
 import { useAuth } from "../../contextV2/AuthProvider";
@@ -7,7 +7,6 @@ import Input from "./Input";
 
 const Username = () => {
   const location = useLocation();
-  console.log("username location", location); // for help text
 
   const { userName, setUserName } = useAuthPage();
 
@@ -27,6 +26,9 @@ const Username = () => {
 
     if (trimmedValue(val).length < 3) {
       setIsSuccess(false);
+      if (location.pathname === "/signup") {
+        setHelpText("Username must at least 3 character long!");
+      }
       // if location /singup
       // set help text: "Username must at least 3 character long!"
     } else {
@@ -34,6 +36,13 @@ const Username = () => {
       setHelpText("");
     }
   };
+
+  useEffect(() => {
+    if (location.state?.username) {
+      setUserName(location.state?.username);
+      setIsSuccess(true);
+    }
+  }, []);
 
   return (
     <Input

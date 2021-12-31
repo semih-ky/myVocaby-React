@@ -5,7 +5,6 @@ import { useAuthPage } from "../../contextV2/AuthPageProvider";
 
 const AuthButton = ({ label }) => {
   const location = useLocation();
-  console.log("authbutton location", location); // for login/signup handler
 
   const { isLoading } = useAuth();
   const { userName, password, rePassword, loginHandler, signupHandler } =
@@ -15,6 +14,14 @@ const AuthButton = ({ label }) => {
 
   useEffect(() => {
     if (userName.length > 2 && password.length > 7) {
+      if (location.pathname === "/signup") {
+        if (password === rePassword) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
+        return;
+      }
       setIsDisable(false);
     } else {
       setIsDisable(true);
@@ -25,7 +32,9 @@ const AuthButton = ({ label }) => {
     <div className="field">
       <div className="control">
         <button
-          onClick={label === "Login" ? loginHandler : signupHandler}
+          onClick={
+            location.pathname === "/login" ? loginHandler : signupHandler
+          }
           className={isLoading ? "button is-link is-loading" : "button is-link"}
           disabled={isDisable}
         >

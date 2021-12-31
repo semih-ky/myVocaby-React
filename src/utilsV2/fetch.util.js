@@ -1,7 +1,7 @@
-const TOKEN = localStorage.getItem("token");
 const HOST = "http://localhost:5000/api/v1";
 
 async function fetchData(path = "", method = "GET", token = false, body = "") {
+  const TOKEN = localStorage.getItem("token");
   const url = HOST + path;
   const headers = new Headers({ "Content-Type": "application/json" });
   if (token) headers.append("Authorization", "Bearer " + TOKEN);
@@ -18,7 +18,14 @@ async function fetchData(path = "", method = "GET", token = false, body = "") {
     };
   }
 
-  let res = await fetch(url, init);
+  let res;
+  try {
+    res = await fetch(url, init);
+  } catch (err) {
+    const error = new Error("Something went wrong!");
+    error.statusCode = 500;
+    throw error;
+  }
 
   const contentType = res.headers.get("content-type");
   if (!contentType || !contentType.includes("application/json")) {

@@ -27,7 +27,7 @@ const Panel = () => {
           {isPanelOpen && (
             <>
               <CreateFilter />
-              <FilterList />
+              <FilterList panelOpenClose={panelOpenClose} />
             </>
           )}
         </nav>

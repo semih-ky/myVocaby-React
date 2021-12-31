@@ -4,10 +4,13 @@ import {
   postCreateFilter,
   deleteFilter,
 } from "../utilsV2/fetch.api";
+import { useWords } from "./WordsProvider";
 
 const FiltersContext = createContext(null);
 
 export const FiltersProvider = ({ children }) => {
+  const { changeFilter } = useWords();
+
   const [filterList, setFilterList] = useState([]);
 
   const [error, setError] = useState(null);
@@ -25,13 +28,13 @@ export const FiltersProvider = ({ children }) => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setErrorPage(err);
+      setIsLoading(false);
     }
   };
 
   const createFilter = async (filterName = "") => {
-    if (!filterName) return;
+    if (!filterName) return false;
     if (error) setError(null);
     setIsLoading(true);
 
@@ -42,10 +45,12 @@ export const FiltersProvider = ({ children }) => {
 
       setFilterList([...filterList, filterName]);
       setIsLoading(false);
+      return true;
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
+      return false;
     }
   };
 
@@ -62,20 +67,23 @@ export const FiltersProvider = ({ children }) => {
       let updatedFilterList = filterList.filter((item) => item !== filterName);
       setFilterList(updatedFilterList);
       setIsLoading(false);
+      changeFilter();
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
+    console.log("fetch filters");
     getFilters();
   }, []);
 
   const value = {
     filterList,
     error,
+    setError,
     createFilter,
     delFilter,
     isLoading,

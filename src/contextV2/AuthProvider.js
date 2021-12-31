@@ -10,10 +10,11 @@ import {
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  console.log("auth provider");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInFunct());
+  const [isLoggedIn, setIsLoggedIn] = useState(() => isLoggedInFunct());
 
   const [tknExp, setTknExp] = useState(null);
 
@@ -42,8 +43,8 @@ export const AuthProvider = ({ children }) => {
       navigate(location.state?.from || "/home");
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
     }
   };
 
@@ -64,8 +65,8 @@ export const AuthProvider = ({ children }) => {
       });
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
     }
   };
 
@@ -120,6 +121,7 @@ export const AuthProvider = ({ children }) => {
   let value = {
     isLoggedIn,
     error,
+    setError,
     login,
     signup,
     logout,

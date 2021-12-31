@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useAuthPage } from "../../contextV2/AuthPageProvider";
 import { useAuth } from "../../contextV2/AuthProvider";
-import { regexValidator, trimmedValue } from "../../utilsV2/util";
+import { regexValidator } from "../../utilsV2/util";
 import Input from "./Input";
 
-const Password = () => {
-  const location = useLocation();
-  console.log("location", location);
-
+const RePassword = () => {
   const { password, rePassword, setRePassword } = useAuthPage();
   const { error } = useAuth();
 
@@ -26,6 +22,7 @@ const Password = () => {
 
     if (password !== val) {
       setIsSuccess(false);
+      setHelpText("Re Password does not match!");
       // if location /singup
       // set help text: "Re Password does not match!"
     } else {
@@ -58,4 +55,4 @@ const Password = () => {
     />
   );
 };
-export default Password;
+export default RePassword;

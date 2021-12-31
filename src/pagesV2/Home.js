@@ -1,27 +1,22 @@
 import { useWords } from "../contextV2/WordsProvider";
-import { FiltersProvider } from "../contextV2/FiltersProvider";
-import Loading from "../componentsV2/Loading";
 import Error from "./Error";
 import Navbar from "../componentsV2/Navbar/index";
 import Panel from "../componentsV2/Panel/index";
 import Cards from "../componentsV2/Cards/index";
 
 const Home = () => {
-  const { errorPage, isLoading } = useWords();
+  const { errorPage } = useWords();
+
+  console.log("home");
+
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : errorPage ? (
+      {errorPage ? (
         <Error message={errorPage.message} statusCode={errorPage.statusCode} />
       ) : (
         <>
           <Navbar />
-
-          <FiltersProvider>
-            <Panel />
-          </FiltersProvider>
-
+          <Panel />
           <Cards />
         </>
       )}

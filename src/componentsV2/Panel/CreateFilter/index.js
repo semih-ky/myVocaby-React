@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CreateFilterModal from "./CreateFilterModal";
 
 const CreateFilter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

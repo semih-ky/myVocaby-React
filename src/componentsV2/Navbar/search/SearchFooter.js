@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSearch } from "../../../contextV2/SearchProvider";
 import { useWords } from "../../../contextV2/WordsProvider";
 

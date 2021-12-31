@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import fetchData from "../utilsV2/fetch.util";
 import { useWords } from "./WordsProvider";
 

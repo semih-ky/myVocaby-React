@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFilters } from "../../../contextV2/FiltersProvider";
+import { useWords } from "../../../contextV2/WordsProvider";
 import { regexValidator } from "../../../utilsV2/util";
 
 const CreateFilterModal = ({ modalOpenClose }) => {
-  const { createFilter, error, isLoading } = useFilters();
+  const { createFilter, error, setError, isLoading } = useFilters();
+
+  const { changeFilter } = useWords();
 
   const [filterName, setFilterName] = useState("");
 
@@ -15,9 +18,19 @@ const CreateFilterModal = ({ modalOpenClose }) => {
     setFilterName(val);
   };
 
-  const createHandler = () => {
-    createFilter(filterName);
+  const createHandler = async () => {
+    const isCreated = await createFilter(filterName);
+    if (isCreated) {
+      modalOpenClose();
+      changeFilter(filterName);
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      setError(null);
+    };
+  }, []);
 
   return (
     <div className="modal is-active">

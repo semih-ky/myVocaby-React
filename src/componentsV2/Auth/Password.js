@@ -7,7 +7,6 @@ import Input from "./Input";
 
 const Password = () => {
   const location = useLocation();
-  console.log("location", location); // for help text
 
   const { password, setPassword } = useAuthPage();
   const { error } = useAuth();
@@ -26,6 +25,9 @@ const Password = () => {
 
     if (trimmedValue(val).length < 8) {
       setIsSuccess(false);
+      if (location.pathname === "/signup") {
+        setHelpText("Password must at least 8 character long!");
+      }
       // if location /singup
       // set help text: "Password must at least 8 character long!"
     } else {

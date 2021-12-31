@@ -2,12 +2,11 @@ import { useWords } from "../../contextV2/WordsProvider";
 import { useFilters } from "../../contextV2/FiltersProvider";
 
 const DeleteFilter = () => {
-  const { filter, changeFilter } = useWords();
+  const { filter } = useWords();
   const { delFilter, error, isLoading } = useFilters();
 
   const deleteHandler = () => {
     delFilter(filter);
-    changeFilter();
   };
 
   return (

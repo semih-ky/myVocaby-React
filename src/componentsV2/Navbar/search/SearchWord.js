@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SearchModal from "./SearchModal";
 
 const SearchWord = () => {
   const [isModalActive, setIsModalActive] = useState(false);

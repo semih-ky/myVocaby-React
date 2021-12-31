@@ -3,6 +3,8 @@ import { QuizProblemsProvider } from "../../contextV2/QuizProblemsProvider";
 import { QuizProvider } from "../../contextV2/QuizProvider";
 import Navbar from "../../componentsV2/Navbar/index";
 import QuizSetup from "./QuizSetup";
+import QuizProblems from "./QuizProblems";
+import QuizSummary from "./QuizSummary";
 
 const Quiz = () => {
   return (

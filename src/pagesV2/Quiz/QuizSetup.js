@@ -1,8 +1,8 @@
 import { useQuiz } from "../../contextV2/QuizProvider";
 import { useQuizPage } from "../../contextV2/QuizPageProvider";
 import Loading from "../../componentsV2/Loading";
-import SelectQuestionNumber from "../../componentsV2/Quiz/SelectQuestionNumber";
-import StartButton from "../../componentsV2/Quiz/StartButton";
+import SelectQuestionNumber from "../../componentsV2/Quiz/QuizSetup/SelectQuestionNumber";
+import StartButton from "../../componentsV2/Quiz/QuizSetup/StartButton";
 
 const QuizSetup = () => {
   const { isLoading, isEnoughWords } = useQuiz();

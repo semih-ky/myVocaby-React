@@ -50,7 +50,7 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            <SearchWord />
+            {location.pathname !== "/quiz" && <SearchWord />}
             <Logout />
           </div>
         </div>

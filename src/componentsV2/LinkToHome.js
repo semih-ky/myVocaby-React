@@ -10,3 +10,4 @@ const LinkToHome = () => {
     </Link>
   );
 };
+export default LinkToHome;

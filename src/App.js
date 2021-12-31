@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./contextV2/AuthProvider";
 import { WordsProvider } from "./contextV2/WordsProvider";
+import { FiltersProvider } from "./contextV2/FiltersProvider";
 
 import Authentication from "./componentsV2/Authentication";
 import RestrictedPage from "./componentsV2/RestrictedPage";
@@ -23,7 +24,9 @@ function App() {
           element={
             <Authentication>
               <WordsProvider>
-                <Home />
+                <FiltersProvider>
+                  <Home />
+                </FiltersProvider>
               </WordsProvider>
             </Authentication>
           }
@@ -33,7 +36,9 @@ function App() {
           element={
             <Authentication>
               <WordsProvider>
-                <Home />
+                <FiltersProvider>
+                  <Home />
+                </FiltersProvider>
               </WordsProvider>
             </Authentication>
           }

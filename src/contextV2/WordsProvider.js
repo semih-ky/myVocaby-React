@@ -4,7 +4,8 @@ import { getWords, postSaveWord, deleteWord } from "../utilsV2/fetch.api";
 const WordsContext = createContext(null);
 
 export const WordsProvider = ({ children }) => {
-  const [words, setWords] = useState(null);
+  console.log("words provider");
+  const [words, setWords] = useState([]);
 
   const [filter, setFilter] = useState("");
 
@@ -12,7 +13,7 @@ export const WordsProvider = ({ children }) => {
 
   const [errorPage, setErrorPage] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchWords = async () => {
     if (errorPage) setErrorPage(null);
@@ -22,12 +23,12 @@ export const WordsProvider = ({ children }) => {
       data.words.sort(
         (item1, item2) => Date.parse(item2.history) - Date.parse(item1.history)
       );
-      setIsLoading(false);
       setWords(data.words);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setErrorPage(err);
+      setIsLoading(false);
     }
   };
 
@@ -40,12 +41,12 @@ export const WordsProvider = ({ children }) => {
         wordId: wordId,
         filter: filter,
       });
-      setIsLoading(false);
       setWords([data.word, ...words]);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
     }
   };
 
@@ -59,12 +60,12 @@ export const WordsProvider = ({ children }) => {
         filter: filter,
       });
       let updatedWords = words.filter((word) => word._id !== wordId);
-      setIsLoading(false);
       setWords(updatedWords);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
       setError(err);
+      setIsLoading(false);
     }
   };
 
@@ -77,6 +78,7 @@ export const WordsProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("fetch words");
     fetchWords();
   }, [filter]);
 

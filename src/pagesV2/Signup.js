@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAuth } from "../contextV2/AuthProvider";
 import { AuthPageProvider } from "../contextV2/AuthPageProvider";
 import AuthPageLayout from "../componentsV2/Auth/AuthPageLayout";
@@ -7,7 +8,11 @@ import RePassword from "../componentsV2/Auth/RePassword";
 import AuthButton from "../componentsV2/Auth/AuthButton";
 
 const Signup = () => {
-  const { error } = useAuth();
+  const { error, setError } = useAuth();
+
+  useEffect(() => {
+    return () => setError(null);
+  }, []);
 
   return (
     <AuthPageProvider>

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useWords } from "./WordsProvider";
-import qz from "../utilsV2/quiz.util";
+import { qz } from "../utilsV2/quiz.util";
 
 const QuizContext = createContext(null);
 

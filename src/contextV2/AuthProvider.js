@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import isLoggedInFunct from "../utilsV2/auth.util";
 import {
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => isLoggedInFunct());
 
-  const [tknExp, setTknExp] = useState(null);
+  // const [tknExp, setTknExp] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -36,10 +36,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("expTime", data.expTime);
 
-        setTknExp(data.expTime);
+        const remainingTime = data.expTime - Date.now();
+        refreshToken(remainingTime);
+        setIsLoading(false);
         setIsLoggedIn(true);
       }
-      setIsLoading(false);
       navigate(location.state?.from || "/home");
     } catch (err) {
       console.log(err);
@@ -91,32 +92,31 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem("token", data.token);
           localStorage.setItem("expTime", data.expTime);
 
-          setTknExp(data.expTime);
-        } else {
-          setIsLoggedIn(false);
-          setTknExp("");
+          const remainingTime = data.expTime - Date.now();
+
+          if (remainingTime > 0) {
+            refreshToken(remainingTime);
+          }
         }
       } catch (err) {
         console.log(err);
-        setError(err);
-        setIsLoggedIn(false);
-        setTknExp("");
       }
     }, remainingTime);
   };
 
-  useEffect(() => {
-    if (!tknExp) return;
-    const remainingTime = tknExp - Date.now();
-    refreshToken(remainingTime - 2000);
-  }, [tknExp]);
+  // useEffect(() => {
+  //   if (!tknExp) return;
+  //   const remainingTime = tknExp - Date.now();
+  //   if (remainingTime <= 0) return;
+  //   refreshToken(remainingTime - 2000);
+  // }, [tknExp]);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      const expTime = localStorage.getItem("expTime");
-      setTknExp(expTime);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     const expTime = localStorage.getItem("expTime");
+  //     setTknExp(expTime);
+  //   }
+  // }, []);
 
   let value = {
     isLoggedIn,

@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import { useFilters } from "../../../contextV2/FiltersProvider";
 import { useWords } from "../../../contextV2/WordsProvider";
 import { regexValidator } from "../../../utilsV2/util";
+import { postCreateFilter } from "../../../utilsV2/fetch.api";
 
 const CreateFilterModal = ({ modalOpenClose }) => {
-  const { createFilter, error, setError, isLoading } = useFilters();
+  const { filterList, setFilterList } = useFilters();
 
   const { changeFilter } = useWords();
 
   const [filterName, setFilterName] = useState("");
+
+  const [error, setError] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const filterNameHandler = (e) => {
     const val = e.target.value;
@@ -19,10 +24,23 @@ const CreateFilterModal = ({ modalOpenClose }) => {
   };
 
   const createHandler = async () => {
-    const isCreated = await createFilter(filterName);
-    if (isCreated) {
-      modalOpenClose();
+    if (!filterName) return false;
+    if (error) setError(null);
+    setIsLoading(true);
+
+    try {
+      const data = await postCreateFilter({
+        filter: filterName,
+      });
+
+      setFilterList([...filterList, filterName]);
+      setIsLoading(false);
       changeFilter(filterName);
+      modalOpenClose();
+    } catch (err) {
+      console.log(err);
+      setError(err);
+      setIsLoading(false);
     }
   };
 

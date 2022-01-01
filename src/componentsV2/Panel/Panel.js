@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFilters } from "../../contextV2/FiltersProvider";
 import Error from "../../pagesV2/Error";
 import PanelHeader from "./PanelHeader";
-import CreateFilter from "./CreateFilter/index";
+import CreateFilter from "./CreateFilter/CreateFilter";
 import FilterList from "./FilterList";
 
 const Panel = () => {

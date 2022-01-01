@@ -6,7 +6,7 @@ const PanelHeader = ({ isPanelOpen, panelOpenClose }) => {
 
   const openCloseHandler = (e) => {
     const el = e.target.localName;
-    const restrictedEl = ["i", "span", "button"];
+    const restrictedEl = ["span", "button"];
     if (restrictedEl.includes(el)) return;
     panelOpenClose();
   };
@@ -16,7 +16,7 @@ const PanelHeader = ({ isPanelOpen, panelOpenClose }) => {
   };
 
   return (
-    <p onClick={openCloseHandler} className="panel-block panel-block-custom">
+    <div onClick={openCloseHandler} className="panel-block panel-block-custom">
       <span className="has-text-info" id="panelHeadingName">
         <strong className="has-text-info">Filters</strong>
         <span className="icon">
@@ -34,7 +34,7 @@ const PanelHeader = ({ isPanelOpen, panelOpenClose }) => {
           <DeleteFilter />
         </>
       )}
-    </p>
+    </div>
   );
 };
 export default PanelHeader;

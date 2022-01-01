@@ -1,16 +1,17 @@
 import { useSearch } from "../../../contextV2/SearchProvider";
-import { useWords } from "../../../contextV2/WordsProvider";
+import { useSaveWord } from "../../../contextV2/SaveProvider";
 
 const SearchFooter = ({ modalHandler }) => {
-  const { error, isLoading } = useWords();
-  const { saveHandler, choosenWordId, results } = useSearch();
+  const { results } = useSearch();
+
+  const { choosenWordId, isLoading, error, saveWord } = useSaveWord();
 
   const saveButton = async () => {
     if (results.length === 0) return;
     if (!choosenWordId) return;
     if (error) return;
-    await saveHandler();
-    modalHandler();
+    const isOK = await saveWord();
+    if (isOK) modalHandler();
   };
 
   return (

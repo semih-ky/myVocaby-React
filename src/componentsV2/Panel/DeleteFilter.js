@@ -1,13 +1,42 @@
+import { useEffect, useState } from "react";
 import { useWords } from "../../contextV2/WordsProvider";
 import { useFilters } from "../../contextV2/FiltersProvider";
+import { deleteFilter } from "../../utilsV2/fetch.api";
 
 const DeleteFilter = () => {
-  const { filter } = useWords();
-  const { delFilter, error, isLoading } = useFilters();
+  const { filter, changeFilter } = useWords();
+  const { filterList, setFilterList } = useFilters();
 
-  const deleteHandler = () => {
-    delFilter(filter);
+  const [error, setError] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteHandler = async () => {
+    if (!filter) return;
+    if (error) setError(null);
+    setIsLoading(true);
+
+    try {
+      const data = await deleteFilter({
+        filter: filter,
+      });
+
+      let updatedFilterList = filterList.filter((item) => item !== filter);
+      setFilterList(updatedFilterList);
+      setIsLoading(false);
+      changeFilter();
+    } catch (err) {
+      console.log(err);
+      setError(err);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      setError(null);
+    }
+  }, [filter]);
 
   return (
     <>

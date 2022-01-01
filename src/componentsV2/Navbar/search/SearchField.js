@@ -1,14 +1,27 @@
+import { useSaveWord } from "../../../contextV2/SaveProvider";
 import { useSearch } from "../../../contextV2/SearchProvider";
 import { regexValidator } from "../../../utilsV2/util";
 
 const SearchField = () => {
-  const { word, setWord, searchHandler, isLoading } = useSearch();
+  const { word, setWord, searchWord, setResults, isLoading, error, setError } =
+    useSearch();
+
+  const { setChoosenWordId } = useSaveWord();
 
   const wordHandler = (e) => {
     const val = e.target.value;
     const isValid = regexValidator(val, /[A-Za-z]/);
     if (!isValid) return;
     setWord(val);
+  };
+
+  const searchHandler = () => {
+    setChoosenWordId("");
+    if (!word) return;
+    if (error) setError(null);
+    setResults([]);
+    setChoosenWordId("");
+    searchWord();
   };
 
   return (

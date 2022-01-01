@@ -1,18 +1,29 @@
 import { useWords } from "../contextV2/WordsProvider";
 import Error from "./Error";
-import Navbar from "../componentsV2/Navbar/index";
-import Panel from "../componentsV2/Panel/index";
-import Cards from "../componentsV2/Cards/index";
+import { useFilters } from "../contextV2/FiltersProvider";
+import Navbar from "../componentsV2/Navbar/Navbar";
+import Panel from "../componentsV2/Panel/Panel";
+import Cards from "../componentsV2/Cards/Cards";
 
 const Home = () => {
-  const { errorPage } = useWords();
+  const { errorPage: getWordsError } = useWords();
+
+  const { errorPage: getFiltersError } = useFilters();
 
   console.log("home");
 
   return (
     <>
-      {errorPage ? (
-        <Error message={errorPage.message} statusCode={errorPage.statusCode} />
+      {getWordsError ? (
+        <Error
+          message={getWordsError.message}
+          statusCode={getWordsError.statusCode}
+        />
+      ) : getFiltersError ? (
+        <Error
+          message={getFiltersError.message}
+          statusCode={getFiltersError.statusCode}
+        />
       ) : (
         <>
           <Navbar />

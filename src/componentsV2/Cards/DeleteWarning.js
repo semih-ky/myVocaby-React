@@ -1,12 +1,39 @@
+import { useState, useEffect } from "react";
 import { useWords } from "../../contextV2/WordsProvider";
+import { deleteWord } from "../../utilsV2/fetch.api";
 
-const DeleteWarning = ({ wordId, warningOpenClose }) => {
-  const { delWord } = useWords();
+const DeleteWarning = ({ word, warningOpenClose }) => {
+  const { words, setWords, filter } = useWords();
 
-  const deleteHandler = () => {
-    delWord(wordId);
-    warningOpenClose();
+  const [error, setError] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteHandler = async () => {
+    if (!word.wordId) return;
+    if (error) setError(null);
+    setIsLoading(true);
+    try {
+      const data = await deleteWord({
+        wordId: word.wordId,
+        filter: filter,
+      });
+      let updatedWords = words.filter((item) => item._id !== word.wordId);
+      setWords(updatedWords);
+      setIsLoading(false);
+      warningOpenClose();
+    } catch (err) {
+      console.log(err);
+      setError(err);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      setError(null);
+    };
+  }, []);
 
   return (
     <div className="modal is-active">
@@ -20,14 +47,37 @@ const DeleteWarning = ({ wordId, warningOpenClose }) => {
             aria-label="close"
           ></button>
         </header>
-        <section className="modal-card-body">
-          <p>
-            If you click delete button, the word will be deleted from{" "}
-            <strong>all filters.</strong>
-          </p>
-        </section>
+
+        {error ? (
+          <section className="modal-card-body">
+            <p className="has-text-danger">{error.message}</p>
+          </section>
+        ) : (
+          <section className="modal-card-body">
+            <p>
+              Are you sure want to delete word: <strong>{word.wordName}</strong>{" "}
+              ?
+            </p>
+            {filter ? (
+              <p>
+                Filter: <strong>{filter}</strong>
+              </p>
+            ) : (
+              <p>
+                If you click delete button, the word will be deleted from{" "}
+                <strong>all filters.</strong>
+              </p>
+            )}
+          </section>
+        )}
+
         <footer className="modal-card-foot">
-          <button onClick={deleteHandler} className="button is-danger">
+          <button
+            onClick={deleteHandler}
+            className={
+              isLoading ? "button is-danger is-loading" : "button is-danger"
+            }
+          >
             Delete
           </button>
           <button onClick={warningOpenClose} className="button">

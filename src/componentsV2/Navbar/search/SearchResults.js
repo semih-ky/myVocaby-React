@@ -1,10 +1,10 @@
 import { useRef, useEffect, useState } from "react";
+import { useSaveWord } from "../../../contextV2/SaveProvider";
 import { useSearch } from "../../../contextV2/SearchProvider";
-import { useWords } from "../../../contextV2/WordsProvider";
 
 const SearchResults = () => {
-  const { results, choosenWordId, setChoosenWordId } = useSearch();
-  const { error } = useWords();
+  const { results } = useSearch();
+  const { choosenWordId, setChoosenWordId, error } = useSaveWord();
 
   const [isPlay, setIsPlay] = useState("");
 
@@ -26,6 +26,8 @@ const SearchResults = () => {
   };
 
   useEffect(() => {
+    console.log("results", results);
+    console.log("ref", focusResults.current);
     if (focusResults.current) {
       focusResults.current.focus();
     }

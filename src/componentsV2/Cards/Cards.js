@@ -4,13 +4,13 @@ import Loading from "../Loading";
 import DeleteWarning from "./DeleteWarning";
 
 const Cards = () => {
-  const { words, delWord, isLoading, filter } = useWords();
+  const { words, isLoading } = useWords();
 
   const [isPlay, setIsPlay] = useState("");
 
   const [isOpenWarning, setIsOpenWarning] = useState("");
 
-  const [wordId, setWordId] = useState("");
+  const [word, setWord] = useState("");
 
   const playHandler = (e) => {
     setIsPlay(e.currentTarget.parentElement.id);
@@ -24,11 +24,8 @@ const Cards = () => {
 
   const deleteHandler = (e) => {
     const choosenWordId = e.currentTarget.id;
-    if (filter) {
-      delWord(choosenWordId);
-      return;
-    }
-    setWordId(choosenWordId);
+    const wordName = e.currentTarget.dataset.wordname;
+    setWord({ wordId: choosenWordId, wordName });
     setIsOpenWarning(true);
   };
 
@@ -43,10 +40,7 @@ const Cards = () => {
       ) : (
         <div className="card-background">
           {isOpenWarning && (
-            <DeleteWarning
-              wordId={wordId}
-              warningOpenClose={warningOpenClose}
-            />
+            <DeleteWarning word={word} warningOpenClose={warningOpenClose} />
           )}
           <div className="cards-container">
             {words.map((word) => (
@@ -70,6 +64,7 @@ const Cards = () => {
                   <div
                     className="delete-icon"
                     id={word._id}
+                    data-wordname={word.word}
                     onClick={deleteHandler}
                   >
                     <span className="icon has-text-danger">

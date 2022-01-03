@@ -5,6 +5,11 @@ export const qz = {
   },
 
   generateRandomSort(max, dataLength) {
+    if (Array.isArray(dataLength)) {
+      dataLength = dataLength.length;
+    }
+    if (max <= 0 || dataLength <= 0) return;
+
     if (max > dataLength) max = dataLength;
     let randomSort = [];
 

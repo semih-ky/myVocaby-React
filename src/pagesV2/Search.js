@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import SearchBody from "./SearchBody";
-import SearchFooter from "./SearchFooter";
-import { useSearch } from "../../../contextV2/SearchProvider";
-import { useSaveWord } from "../../../contextV2/SaveProvider";
+import SearchBody from "../componentsV2/Navbar/search/SearchBody";
+import SearchFooter from "../componentsV2/Navbar/search/SearchFooter";
+import { useSearch } from "../contextV2/SearchProvider";
+import { useSaveWord } from "../contextV2/SaveProvider";
 
 const VIEWPORT_WIDTH = window.visualViewport.width;
 
-const SearchModal = ({ modalHandler }) => {
+const Search = () => {
   const { clearSearch } = useSearch();
   const { clearSaveWord } = useSaveWord();
 
@@ -20,19 +20,15 @@ const SearchModal = ({ modalHandler }) => {
   return (
     <div className="modal is-active">
       <div className="modal-background"></div>
-      <div className="modal-card">
+      <div className="modal-card modal-card-custom">
         <header className="modal-card-head">
           <p className="modal-card-title">Search Word</p>
-          <button
-            onClick={modalHandler}
-            className="delete"
-            aria-label="close"
-          ></button>
+          <button className="delete" aria-label="close"></button>
         </header>
         <SearchBody />
-        <SearchFooter modalHandler={modalHandler} />
+        <SearchFooter modalHandler={""} />
       </div>
     </div>
   );
 };
-export default SearchModal;
+export default Search;

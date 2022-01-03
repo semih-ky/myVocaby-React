@@ -50,7 +50,12 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            {location.pathname !== "/quiz" && <SearchWord />}
+            {location.pathname !== "/quiz" && (
+              <SearchWord
+                isBurgerActive={isBurgerActive}
+                setIsBurgerActive={setIsBurgerActive}
+              />
+            )}
             <Logout />
           </div>
         </div>

@@ -63,7 +63,7 @@ const Cards = () => {
                   </div>
                   <div
                     className="delete-icon"
-                    id={word._id}
+                    id={word.wordId}
                     data-wordname={word.word}
                     onClick={deleteHandler}
                   >

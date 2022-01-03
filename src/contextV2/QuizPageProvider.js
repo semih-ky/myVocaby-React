@@ -14,6 +14,8 @@ export const QuizPageProvider = ({ children }) => {
   const restartQuiz = () => {
     setIsQuizStart(false);
     setIsQuizFinished(false);
+    setSelectedAnsId("");
+    setIsLock(false);
   };
 
   const value = {

@@ -27,7 +27,7 @@ export const SearchProvider = ({ children }) => {
     // if (error) setError(null);
     // setResults([]);
     // setChoosenWordId("");
-    // setIsLoading(true);
+    setIsLoading(true);
 
     try {
       const data = await postSearch({

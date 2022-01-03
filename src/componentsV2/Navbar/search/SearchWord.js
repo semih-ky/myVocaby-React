@@ -3,11 +3,14 @@ import SearchModal from "./SearchModal";
 import { SearchProvider } from "../../../contextV2/SearchProvider";
 import { SaveWordProvider } from "../../../contextV2/SaveProvider";
 
-const SearchWord = () => {
+const SearchWord = ({ isBurgerActive, setIsBurgerActive }) => {
   const [isModalActive, setIsModalActive] = useState(false);
 
   const modalHandler = () => {
     setIsModalActive(!isModalActive);
+    if (isBurgerActive) {
+      setIsBurgerActive(false);
+    }
   };
   return (
     <SearchProvider>

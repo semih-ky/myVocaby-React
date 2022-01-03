@@ -18,7 +18,7 @@ const DeleteWarning = ({ word, warningOpenClose }) => {
         wordId: word.wordId,
         filter: filter,
       });
-      let updatedWords = words.filter((item) => item._id !== word.wordId);
+      let updatedWords = words.filter((item) => item.wordId !== word.wordId);
       setWords(updatedWords);
       setIsLoading(false);
       warningOpenClose();

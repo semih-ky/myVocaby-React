@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useWords } from "./WordsProvider";
 import { qz } from "../utilsV2/quiz.util";
 
@@ -8,39 +8,37 @@ export const QuizProvider = ({ children }) => {
   const { words } = useWords();
 
   const [quizWords, setQuizWords] = useState([]);
+  console.log(quizWords);
 
   const [numberOfQuestion, setNumberOfQuestion] = useState(5);
 
-  const [isEnoughWords, setIsEnoughWords] = useState(false);
+  const [isEnoughWords, setIsEnoughWords] = useState(true);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const checkEnoughWords = () => quizWords.length >= numberOfQuestion;
+  const checkEnoughWords = (val) => quizWords.length >= val;
 
   const numOfQstnHandler = (value) => {
     if (isNaN(value)) return;
     setNumberOfQuestion(value);
+    setIsEnoughWords(checkEnoughWords(value));
   };
 
   useEffect(() => {
-    if (words.length === 0) return;
-    setIsLoading(true);
+    if (words.length < 0) return;
     const qzWords = qz.getUniqueQuizWords(words);
     setQuizWords(qzWords);
-    setIsEnoughWords(checkEnoughWords());
-    setIsLoading(false);
+    const isEnough = qzWords.length >= numberOfQuestion;
   }, [words]);
 
-  useEffect(() => {
-    setIsEnoughWords(checkEnoughWords());
-  }, [numberOfQuestion]);
+  // useEffect(() => {
+  //   setIsEnoughWords(checkEnoughWords());
+  // }, [numberOfQuestion, quizWords]);
 
   const value = {
     quizWords,
     numberOfQuestion,
     numOfQstnHandler,
     isEnoughWords,
-    isLoading,
+    setIsEnoughWords,
   };
 
   return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;

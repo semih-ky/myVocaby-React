@@ -8,7 +8,7 @@ export const QuizProblemsProvider = ({ children }) => {
   const { quizWords, numberOfQuestion } = useQuiz();
 
   const questionsSort = useRef(
-    qz.generateRandomSort(numberOfQuestion, quizWords)
+    qz.generateRandomSort(numberOfQuestion, quizWords.length)
   );
   const userCorrect = useRef(0);
   const userWrong = useRef(0);
@@ -20,9 +20,7 @@ export const QuizProblemsProvider = ({ children }) => {
 
   const [isLastQuestion, setIsLastQuestion] = useState(false);
 
-  // const [isFinished, setIsFinished] = useState(false);
-
-  const getQuizData = () =>
+  const getQuizData = (questionNumber) =>
     qz.getQuizData(quizWords, questionsSort.current, questionNumber);
 
   const checkUserAnswer = (id) => {
@@ -34,20 +32,28 @@ export const QuizProblemsProvider = ({ children }) => {
   };
 
   const nextQuestion = () => {
-    setQuestionNumber((oldState) => oldState + 1);
-  };
+    const qstnNo = questionNumber + 1;
 
-  useEffect(() => {
-    if (questionNumber + 1 === numberOfQuestion) {
+    if (qstnNo + 1 > numberOfQuestion) return;
+
+    if (qstnNo + 1 === numberOfQuestion) {
       setIsLastQuestion(true);
     }
 
-    const quizData = getQuizData();
+    const quizData = getQuizData(qstnNo);
 
+    setQuestionNumber(qstnNo);
     setQuestion(quizData.question);
     setAnswers(quizData.answers);
     setCorrectAnswerId(quizData.correctAnswerId);
-  }, [questionNumber]);
+  };
+
+  useEffect(() => {
+    const quizData = getQuizData(questionNumber);
+    setQuestion(quizData.question);
+    setAnswers(quizData.answers);
+    setCorrectAnswerId(quizData.correctAnswerId);
+  }, []);
 
   const value = {
     question,

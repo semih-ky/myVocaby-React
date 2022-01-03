@@ -1,11 +1,8 @@
 import { QuizPageProvider } from "../../contextV2/QuizPageProvider";
-import { QuizProblemsProvider } from "../../contextV2/QuizProblemsProvider";
 import { QuizProvider } from "../../contextV2/QuizProvider";
 import Navbar from "../../componentsV2/Navbar/Navbar";
-import QuizSetup from "./QuizSetup";
-import QuizProblems from "./QuizProblems";
-import QuizSummary from "./QuizSummary";
 import { useWords } from "../../contextV2/WordsProvider";
+import QuizPage from "./QuizPage";
 
 const Quiz = () => {
   const { words } = useWords();
@@ -13,15 +10,11 @@ const Quiz = () => {
   return (
     <>
       <Navbar />
-      {/* <QuizPageProvider>
+      <QuizPageProvider>
         <QuizProvider>
-          <QuizSetup />
-          <QuizProblemsProvider>
-            <QuizProblems />
-            <QuizSummary />
-          </QuizProblemsProvider>
+          <QuizPage />
         </QuizProvider>
-      </QuizPageProvider> */}
+      </QuizPageProvider>
     </>
   );
 };

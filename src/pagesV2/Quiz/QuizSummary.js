@@ -9,8 +9,6 @@ import LinkToHome from "../../componentsV2/LinkToHome";
 import RestartButton from "../../componentsV2/Quiz/RestartButton";
 
 const QuizSummary = () => {
-  const { isQuizFinished } = useQuizPage();
-
   const { correctAnswer, wrongAnswer } = useQuizProblems();
 
   const [message, setMessage] = useState("");
@@ -27,36 +25,32 @@ const QuizSummary = () => {
   }, []);
 
   return (
-    <>
-      {isQuizFinished && (
-        <div className="quiz-summary">
-          <section
-            className={
-              isSuccess === null
-                ? "hero is-link is-fullheight"
-                : isSuccess
-                ? "hero is-success is-fullheight"
-                : "hero is-danger is-fullheight"
-            }
-          >
-            <div className="hero-body">
-              <p className="title">Quiz Summary</p>
-              <CorrectNumber correctAnswer={correctAnswer} />
-              <WrongNumber wrongAnswer={wrongAnswer} />
-              <p className="subtitle">{message && message}</p>
-              <div className="field is-grouped">
-                <p className="control">
-                  <RestartButton />
-                </p>
-                <p className="control">
-                  <LinkToHome />
-                </p>
-              </div>
-            </div>
-          </section>
+    <div className="quiz-summary">
+      <section
+        className={
+          isSuccess === null
+            ? "hero is-link is-fullheight"
+            : isSuccess
+            ? "hero is-success is-fullheight"
+            : "hero is-danger is-fullheight"
+        }
+      >
+        <div className="hero-body hero-body-custom">
+          <p className="title">Quiz Summary</p>
+          <CorrectNumber correctAnswer={correctAnswer} />
+          <WrongNumber wrongAnswer={wrongAnswer} />
+          <p className="subtitle">{message && message}</p>
+          <div className="field is-grouped">
+            <p className="control">
+              <RestartButton />
+            </p>
+            <p className="control">
+              <LinkToHome />
+            </p>
+          </div>
         </div>
-      )}
-    </>
+      </section>
+    </div>
   );
 };
 export default QuizSummary;

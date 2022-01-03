@@ -222,3 +222,13 @@ input[name="choosenWord"] {
   top: 0;
   left: 0;
 }
+.hero-body-custom {
+  justify-content: center;
+  flex-direction: column;
+  align-items: inherit !important;
+}
+
+.modal-card-custom {
+  width: 100vw;
+  height: 100vh;
+}

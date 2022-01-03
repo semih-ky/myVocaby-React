@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contextV2/AuthProvider";
 import { WordsProvider } from "./contextV2/WordsProvider";
 import { FiltersProvider } from "./contextV2/FiltersProvider";
+import { SearchProvider } from "./contextV2/SearchProvider";
+import { SaveWordProvider } from "./contextV2/SaveProvider";
 
 import Authentication from "./componentsV2/Authentication";
 import RestrictedPage from "./componentsV2/RestrictedPage";
@@ -14,6 +16,7 @@ import Error from "./pagesV2/Error";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./App.css";
+import Search from "./pagesV2/Search";
 
 function App() {
   return (
@@ -39,6 +42,20 @@ function App() {
                 <FiltersProvider>
                   <Home />
                 </FiltersProvider>
+              </WordsProvider>
+            </Authentication>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <Authentication>
+              <WordsProvider>
+                <SearchProvider>
+                  <SaveWordProvider>
+                    <Search />
+                  </SaveWordProvider>
+                </SearchProvider>
               </WordsProvider>
             </Authentication>
           }

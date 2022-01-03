@@ -1,4 +1,4 @@
-const HOST = "http://localhost:5000/api/v1";
+const HOST = "http://192.168.1.102:5000/api/v1";
 
 async function fetchData(path = "", method = "GET", token = false, body = "") {
   const TOKEN = localStorage.getItem("token");

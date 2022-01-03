@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useEffect } from "react/cjs/react.development";
 import { useSearch } from "../../../contextV2/SearchProvider";
 
 const WORD_TYPES = [
@@ -12,7 +14,9 @@ const WORD_TYPES = [
 ];
 
 const SearchWordTypes = () => {
-  const { choosenTypes, setChoosenTypes } = useSearch();
+  const { isLoading, choosenTypes, setChoosenTypes } = useSearch();
+
+  const [isOptOpen, setIsOptOpen] = useState(false);
 
   const typeHandler = (e) => {
     const choosenType = e.target.id;
@@ -27,22 +31,52 @@ const SearchWordTypes = () => {
     setChoosenTypes(updatedChoosenTypes);
   };
 
+  const optionHandler = () => {
+    setIsOptOpen(!isOptOpen);
+  };
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsOptOpen(false);
+    }
+  }, [isLoading]);
+
   return (
-    <div className="field is-grouped is-grouped-multiline">
-      {WORD_TYPES.map((type) => (
-        <p key={type} className="control">
-          <a
-            onClick={typeHandler}
-            id={type}
-            className={
-              choosenTypes.includes(type) ? "button is-active" : "button"
-            }
-          >
-            {type}
-          </a>
-        </p>
-      ))}
-    </div>
+    <>
+      <div
+        onClick={optionHandler}
+        style={{ marginBottom: "10px", cursor: "pointer" }}
+      >
+        <span className="icon-text">
+          <span>Options</span>
+          <span className="icon">
+            <i
+              className={
+                isOptOpen ? "fas fa-chevron-up" : "fas fa-chevron-down"
+              }
+            ></i>
+          </span>
+        </span>
+      </div>
+      <div
+        className="field is-grouped is-grouped-multiline"
+        style={{ display: `${isOptOpen ? "flex" : "none"}` }}
+      >
+        {WORD_TYPES.map((type) => (
+          <p key={type} className="control">
+            <a
+              onClick={typeHandler}
+              id={type}
+              className={
+                choosenTypes.includes(type) ? "button is-active" : "button"
+              }
+            >
+              {type}
+            </a>
+          </p>
+        ))}
+      </div>
+    </>
   );
 };
 export default SearchWordTypes;

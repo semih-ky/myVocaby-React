@@ -1,17 +1,17 @@
 import { useSearch } from "../../../contextV2/SearchProvider";
 import { useSaveWord } from "../../../contextV2/SaveProvider";
+import { Link } from "react-router-dom";
 
-const SearchFooter = ({ modalHandler }) => {
+const SearchFooter = () => {
   const { results } = useSearch();
 
   const { choosenWordId, isLoading, error, saveWord } = useSaveWord();
 
-  const saveButton = async () => {
+  const saveButton = () => {
     if (results.length === 0) return;
     if (!choosenWordId) return;
     if (error) return;
-    const isOK = await saveWord();
-    if (isOK) modalHandler();
+    saveWord();
   };
 
   return (
@@ -28,9 +28,9 @@ const SearchFooter = ({ modalHandler }) => {
       >
         {error ? "Failed" : "Save"}
       </button>
-      <button onClick={modalHandler} className="button">
+      <Link to="/home" className="button">
         Cancel
-      </button>
+      </Link>
       {error && <p className="help is-danger">{error.message}</p>}
     </footer>
   );

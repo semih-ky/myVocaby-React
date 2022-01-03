@@ -37,8 +37,20 @@ const DeleteWarning = ({ word, warningOpenClose }) => {
 
   return (
     <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-card">
+      <div
+        className="modal-background"
+        style={{ touchAction: "none" }}
+        // onTouchStart={(e) => {
+        //   e.preventDefault();
+        //   console.log(e);
+        // }}
+        // onTouchMove={(e) => {
+        //   e.preventDefault();
+        //   console.log(e);
+        // }}
+        // onWheel={(e) => e.preventDefault()}
+      ></div>
+      <div className="modal-card" style={{ touchAction: "none" }}>
         <header className="modal-card-head">
           <p className="modal-card-title has-text-danger">Warning!</p>
           <button
@@ -49,11 +61,11 @@ const DeleteWarning = ({ word, warningOpenClose }) => {
         </header>
 
         {error ? (
-          <section className="modal-card-body">
+          <section style={{ touchAction: "none" }} className="modal-card-body">
             <p className="has-text-danger">{error.message}</p>
           </section>
         ) : (
-          <section className="modal-card-body">
+          <section style={{ touchAction: "none" }} className="modal-card-body">
             <p>
               Are you sure want to delete word: <strong>{word.wordName}</strong>{" "}
               ?

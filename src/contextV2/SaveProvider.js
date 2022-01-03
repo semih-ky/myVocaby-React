@@ -1,10 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { postSaveWord } from "../utilsV2/fetch.api";
 import { useWords } from "./WordsProvider";
 
 const SaveWordContext = createContext(null);
 
 export const SaveWordProvider = ({ children }) => {
+  const navigate = useNavigate();
+
   const { words, setWords, filter } = useWords();
 
   const [choosenWordId, setChoosenWordId] = useState("");
@@ -30,12 +33,11 @@ export const SaveWordProvider = ({ children }) => {
       });
       setWords([data.word, ...words]);
       setIsLoading(false);
-      return true;
+      navigate("/home");
     } catch (err) {
       console.log(err);
       setError(err);
       setIsLoading(false);
-      return false;
     }
   };
 

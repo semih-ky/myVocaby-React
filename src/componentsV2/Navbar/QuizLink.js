@@ -10,7 +10,12 @@ const QuizLink = () => {
         location.pathname === "/quiz" ? "navbar-item is-active" : "navbar-item"
       }
     >
-      Quiz
+      <span className="icon-text">
+        <span className="icon">
+          <i className="fas fa-vial"></i>
+        </span>
+        <span>Quiz</span>
+      </span>
     </Link>
   );
 };

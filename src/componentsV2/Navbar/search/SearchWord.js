@@ -1,36 +1,17 @@
-import { useState } from "react";
-import SearchModal from "./SearchModal";
-import { SearchProvider } from "../../../contextV2/SearchProvider";
-import { SaveWordProvider } from "../../../contextV2/SaveProvider";
+import { Link } from "react-router-dom";
 
-const SearchWord = ({ isBurgerActive, setIsBurgerActive }) => {
-  const [isModalActive, setIsModalActive] = useState(false);
+const VIEWPORT_WIDTH = window.visualViewport.width; // 1024
 
-  const modalHandler = () => {
-    setIsModalActive(!isModalActive);
-    if (isBurgerActive) {
-      setIsBurgerActive(false);
-    }
-  };
+const SearchWord = () => {
   return (
-    <SearchProvider>
-      <SaveWordProvider>
-        <div className="navbar-item">
-          <div className="buttons">
-            <button
-              onClick={modalHandler}
-              className="button is-link is-inverted"
-            >
-              <span className="icon">
-                <i className="fas fa-search"></i>
-              </span>
-              <strong>Search Word</strong>
-            </button>
-            {isModalActive && <SearchModal modalHandler={modalHandler} />}
-          </div>
-        </div>
-      </SaveWordProvider>
-    </SearchProvider>
+    <Link to="/search" className="navbar-item">
+      <span className="icon-text">
+        <span className="icon">
+          <i className="fas fa-search"></i>
+        </span>
+        <span>Search Word</span>
+      </span>
+    </Link>
   );
 };
 export default SearchWord;

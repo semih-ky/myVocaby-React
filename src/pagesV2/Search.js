@@ -3,8 +3,7 @@ import SearchBody from "../componentsV2/Navbar/search/SearchBody";
 import SearchFooter from "../componentsV2/Navbar/search/SearchFooter";
 import { useSearch } from "../contextV2/SearchProvider";
 import { useSaveWord } from "../contextV2/SaveProvider";
-
-const VIEWPORT_WIDTH = window.visualViewport.width;
+import { Link } from "react-router-dom";
 
 const Search = () => {
   const { clearSearch } = useSearch();
@@ -23,10 +22,10 @@ const Search = () => {
       <div className="modal-card modal-card-custom">
         <header className="modal-card-head">
           <p className="modal-card-title">Search Word</p>
-          <button className="delete" aria-label="close"></button>
+          <Link to="/home" className="delete" aria-label="close"></Link>
         </header>
         <SearchBody />
-        <SearchFooter modalHandler={""} />
+        <SearchFooter />
       </div>
     </div>
   );

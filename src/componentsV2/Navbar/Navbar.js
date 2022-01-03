@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import Brand from "./Brand";
 import QuizLink from "./QuizLink";
 import SearchWord from "./search/SearchWord";
 import Logout from "./Logout";
 
 const Navbar = () => {
-  const location = useLocation();
-  console.log("navbar location", location); // for remove search in quiz page
-
   const [isBurgerActive, setIsBurgerActive] = useState(false);
 
   const burgerMenu = () => {
@@ -47,15 +43,10 @@ const Navbar = () => {
         >
           <div className="navbar-start">
             <QuizLink />
+            <SearchWord />
           </div>
 
           <div className="navbar-end">
-            {location.pathname !== "/quiz" && (
-              <SearchWord
-                isBurgerActive={isBurgerActive}
-                setIsBurgerActive={setIsBurgerActive}
-              />
-            )}
             <Logout />
           </div>
         </div>
